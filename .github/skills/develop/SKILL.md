@@ -1,6 +1,10 @@
 ---
 name: develop
 description: 'Expert TypeScript library developer for MMO Shared Reference Data. Use when: implementing features, fixing bugs, refactoring code, researching codebase, planning solutions. Covers barrel exports, tsup builds, Boomi/CEFAS API, Service Bus integration, shared types.'
+license: OGL-UK-3.0
+metadata:
+  author: mmo-fes
+  version: "1.0"
 ---
 
 # Shared Reference Data — Developer Skill
