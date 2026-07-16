@@ -377,7 +377,6 @@ describe('when converting from catch recording response to landing', () => {
 
     expect(invoke).toThrow('invalid crecord landing data');
     expect(invoke).toThrow('must be object');
-    expect(invoke).not.toThrow('should be object');
   });
 
 });
@@ -399,7 +398,6 @@ describe('when converting from cefas to landing', () => {
     const invoke = () => Transformations.cefasToLandings(null, mockGetToLiveWeightFactor);
 
     expect(invoke).toThrow('must be object');
-    expect(invoke).not.toThrow('should be object');
   });
 
   it('will thrown an exception for empty object', () => {
@@ -659,7 +657,6 @@ describe('when converting from eLog to landing', () => {
     const invoke = () => Transformations.eLogToLandings(null);
 
     expect(invoke).toThrow('must be object');
-    expect(invoke).not.toThrow('should be object');
   });
 
   it('will thrown an exception for empty object', () => {
