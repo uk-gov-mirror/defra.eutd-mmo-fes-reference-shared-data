@@ -373,9 +373,11 @@ describe('when converting from catch recording response to landing', () => {
 
   it('will throw an error if the input does not pass schema validation', () => {
     const input = 'invalid';
+    const invoke = () => Transformations.catchRecordingToLandings(input, rssNumber, mockGetToLiveWeightFactor);
 
-    expect(() => Transformations.catchRecordingToLandings(input, rssNumber, mockGetToLiveWeightFactor))
-      .toThrow('invalid crecord landing data');
+    expect(invoke).toThrow('invalid crecord landing data');
+    expect(invoke).toThrow('should be object');
+    expect(invoke).not.toThrow('must be object');
   });
 
 });
@@ -394,8 +396,10 @@ describe('when converting from cefas to landing', () => {
   })
 
   it('will thrown an exception for empty input', () => {
-    expect(() => Transformations.cefasToLandings(null, mockGetToLiveWeightFactor))
-      .toThrow('should be object');
+    const invoke = () => Transformations.cefasToLandings(null, mockGetToLiveWeightFactor);
+
+    expect(invoke).toThrow('should be object');
+    expect(invoke).not.toThrow('must be object');
   });
 
   it('will thrown an exception for empty object', () => {
@@ -652,8 +656,10 @@ describe('when converting from eLog to landing', () => {
   });
 
   it('will thrown an exception for empty input', () => {
-    expect(() => Transformations.eLogToLandings(null))
-      .toThrow('should be object');
+    const invoke = () => Transformations.eLogToLandings(null);
+
+    expect(invoke).toThrow('should be object');
+    expect(invoke).not.toThrow('must be object');
   });
 
   it('will thrown an exception for empty object', () => {

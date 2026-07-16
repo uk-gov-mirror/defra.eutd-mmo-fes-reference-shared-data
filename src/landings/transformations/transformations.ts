@@ -20,9 +20,9 @@ function getValidator(schema) {
 }
 
 function formatValidationErrors(errors) {
-  return JSON.stringify((errors ?? []).map(error => ({
+  return JSON.stringify(errors.map(error => ({
     ...error,
-    message: error.message?.replace('must be object', 'should be object')
+    message: String(error.message).replace('must be object', 'should be object')
   })))
 }
 
