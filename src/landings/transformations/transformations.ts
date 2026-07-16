@@ -19,13 +19,6 @@ function getValidator(schema) {
   return validate
 }
 
-function formatValidationErrors(errors) {
-  return JSON.stringify(errors.map(error => ({
-    ...error,
-    message: String(error.message).replace('must be object', 'should be object')
-  })))
-}
-
 const validate_cefas = getValidator('cefas.response.schema.json')
 const validate_catchrecordings = getValidator('catchrecordings.response.schema.json')
 const validate_eLog = getValidator('elog.response.schema.json')
@@ -66,7 +59,7 @@ export const cefasToLandings = (cefas: any, getToLiveWeightFactor: (species: str
   // Validate untrusted data from the API against the schema
   const valid = validate_cefas(cefas)
   if (!valid) {
-    throw new Error(`invalid cefas landing data. Errors:${formatValidationErrors(validate_cefas.errors)}`)
+    throw new Error(`invalid cefas landing data. Errors:${JSON.stringify(validate_cefas.errors)}`)
   }
 
   return _cefasToLandings(cefas, getToLiveWeightFactor)
@@ -101,7 +94,7 @@ export const eLogToLandings = (eLog: any): ILanding[] => {
   // Validate untrusted data from the API against the schema
   const valid = validate_eLog(eLog)
   if (!valid) {
-    throw new Error(`invalid eLog data. Errors:${formatValidationErrors(validate_eLog.errors)}`)
+    throw new Error(`invalid eLog data. Errors:${JSON.stringify(validate_eLog.errors)}`)
   }
 
   return _eLogToLandings(eLog);
@@ -111,7 +104,7 @@ export const catchRecordingToLandings = (crecord: any, rssNumber: string, getToL
   logger.info('[LANDINGS][FETCH-LANDING-UNDER10][CATCH-RECORDING-TO-LANDING]');
 
   if (!validate_catchrecordings(crecord)) {
-    throw new Error(`invalid crecord landing data. Errors:${formatValidationErrors(validate_catchrecordings.errors)}`);
+    throw new Error(`invalid crecord landing data. Errors:${JSON.stringify(validate_catchrecordings.errors)}`);
   }
 
   return crecord.activities.map((landing: any) => (
