@@ -373,9 +373,10 @@ describe('when converting from catch recording response to landing', () => {
 
   it('will throw an error if the input does not pass schema validation', () => {
     const input = 'invalid';
+    const invoke = () => Transformations.catchRecordingToLandings(input, rssNumber, mockGetToLiveWeightFactor);
 
-    expect(() => Transformations.catchRecordingToLandings(input, rssNumber, mockGetToLiveWeightFactor))
-      .toThrow('invalid crecord landing data');
+    expect(invoke).toThrow('invalid crecord landing data');
+    expect(invoke).toThrow('must be object');
   });
 
 });
@@ -394,8 +395,9 @@ describe('when converting from cefas to landing', () => {
   })
 
   it('will thrown an exception for empty input', () => {
-    expect(() => Transformations.cefasToLandings(null, mockGetToLiveWeightFactor))
-      .toThrow('should be object');
+    const invoke = () => Transformations.cefasToLandings(null, mockGetToLiveWeightFactor);
+
+    expect(invoke).toThrow('must be object');
   });
 
   it('will thrown an exception for empty object', () => {
@@ -652,8 +654,9 @@ describe('when converting from eLog to landing', () => {
   });
 
   it('will thrown an exception for empty input', () => {
-    expect(() => Transformations.eLogToLandings(null))
-      .toThrow('should be object');
+    const invoke = () => Transformations.eLogToLandings(null);
+
+    expect(invoke).toThrow('must be object');
   });
 
   it('will thrown an exception for empty object', () => {
@@ -1079,7 +1082,7 @@ describe('licence map', () => {
     const vesselsIdx = generateIndex(vessels);
     const lookup = Transformations.vesselLookup(vesselsIdx);
 
-    expect(lookup('K529', '2001-01-01')).toBe(undefined)
+    expect(lookup('K529', '2001-01-01')).toBeUndefined()
 
   })
 
@@ -1139,7 +1142,7 @@ describe('licence map', () => {
     const vesselsIdx = generateIndex(vessels);
     const lookup = Transformations.vesselLookup(vesselsIdx);
 
-    expect(lookup('K529', '2006-06-06')).toBe(undefined)
+    expect(lookup('K529', '2006-06-06')).toBeUndefined()
 
     expect(lookup('K529', '2006-06-07'))
       .toStrictEqual({
@@ -1216,7 +1219,7 @@ describe('licence map', () => {
         vesselLength: 9.4
       })
 
-    expect(lookup('K529', '2006-07-01')).toBe(undefined)
+    expect(lookup('K529', '2006-07-01')).toBeUndefined()
 
   })
 
@@ -1513,7 +1516,7 @@ describe('aggregate landings on date', () => {
 
     const aggregates: ILandingAggregated[] = Transformations.aggregateOnLandingDate(landings)
 
-    expect(aggregates.length).toBe(1)
+    expect(aggregates).toHaveLength(1)
     const aggregated = aggregates[0]
     expect(aggregated.rssNumber).toBe('rssNumber')
     expect(aggregated.dateLanded).toBe('2019-07-01')
@@ -1659,7 +1662,7 @@ describe('aggregate landings on date', () => {
 
     const aggregates: ILandingAggregated[] = Transformations.aggregateOnLandingDate(landings)
 
-    expect(aggregates.length).toBe(4)
+    expect(aggregates).toHaveLength(4)
 
     expect(_.sortBy(aggregates, ['rssNumber', 'dateLanded']))
       .toEqual(_.sortBy(expected, ['rssNumber', 'dateLanded']))
@@ -1767,9 +1770,9 @@ describe('aggregate landings on date', () => {
     ]
 
     const aggregates: ILandingAggregated[] = Transformations.aggregateOnLandingDate(landings)
-    expect(aggregates.length).toBe(1)
+    expect(aggregates).toHaveLength(1)
     const aggregate = aggregates[0]
-    expect(aggregate.items.length).toBe(1)
+    expect(aggregate.items).toHaveLength(1)
     const item = aggregate.items[0]
 
     expect(item.weight).toBe(1.051)
