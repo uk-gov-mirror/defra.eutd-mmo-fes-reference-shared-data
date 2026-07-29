@@ -11,6 +11,13 @@ metadata:
 
 Expert software engineer for the MMO Shared Reference Data library. Reads the codebase, researches, plans, reasons, writes production-ready code for this shared npm package consumed by other FES services.
 
+## Working framework alignment
+
+This skill supports the **§4 working framework** in [copilot-instructions.md](../../copilot-instructions.md) — it does not replace it. Triage first:
+
+- **Trivial / low-risk** change: light Read → Implement → Test → Summarise.
+- **Non-trivial** work (new feature, transformation/type/public-API/integration change, anything affecting shared-type or data correctness): it must go through planning and user approval before implementation — normally coordinated by the [Orchestrator](../../agents/reference-shared-data-orchestrator.agent.md) and [Planner](../../agents/reference-shared-data-planner.agent.md) agents. Use the [deep-research-defra-alignment](../deep-research-defra-alignment/SKILL.md) skill for the Research (§4.2) stage when something is genuinely uncertain.
+
 ## When to Use
 
 - Adding or modifying shared types and interfaces
@@ -48,13 +55,17 @@ Expert software engineer for the MMO Shared Reference Data library. Reads the co
 ### Barrel Exports
 
 ```typescript
-// src/index.ts — ALL public API must be exported here
-export { ILanding, ICcQueryResult, IDocument } from './landings/types';
-export { BoomiService } from './services/BoomiService';
-export { addToReportQueue, MessageLabel } from './services/queue.service';
-export { validatePayload } from './validation/ajvValidator';
-// Consumers import only from package root:
-// import { ILanding, BoomiService } from 'mmo-shared-reference-data';
+// src/index.ts — ALL public API must be re-exported from here
+export * from "./data";
+export * from "./landings";
+export * from "./services";
+
+// Each domain barrel re-exports its own public surface, e.g. src/services/index.ts:
+// export * from "./boomi.service";               // BoomiService + payload interfaces
+// export { MessageLabel, addToReportQueue } from "./queue.service";
+
+// Consumers import only from the package root:
+// import { BoomiService, addToReportQueue } from 'mmo-shared-reference-data';
 ```
 
 ### Boomi/CEFAS API (OAuth2 with Legacy SSL)

@@ -9,21 +9,22 @@ metadata:
 
 # Shared Reference Data — Unit Tests Skill
 
-Expert in writing and maintaining unit tests for the MMO Shared Reference Data library. This shared library enforces 90% coverage.
+Expert in writing and maintaining unit tests for the MMO Shared Reference Data library. This shared library enforces tiered coverage targets.
 
 ## When to Use
 
 - Writing unit tests for new or modified code
 - Fixing failing tests after code changes
-- Maintaining 90% code coverage
+- Maintaining the tiered coverage targets below
 - Fixing SonarQube issues or code smells
 
 ## Coverage Requirements
 
-- **Statements**: 90%
-- **Branches**: 90%
-- **Functions**: 90%
-- **Lines**: 90%
+Tiered targets (aligned with copilot-instructions quality gates) — never drop below the SonarCloud baseline:
+
+- **≥90% global** — Statements, Functions, Lines, Branches
+- **≥95%** — core business logic (query functions, transformations, risk scoring, weight/overuse validation)
+- **100%** — error-handling and security-critical paths (OAuth2/API failures, Service Bus publish failures, input/date validation)
 - Run tests: `npm test` (single run with coverage report)
 - Watch mode: `npm run test:watch`
 
@@ -109,8 +110,8 @@ When fixing SonarQube issues, **NEVER modify functionality**. If existing tests 
 
 1. Identify the source file(s) that need tests
 2. Find existing test file or create new one mirroring `src/` → `test/` path
-3. Read the source code to understand ALL branches — 90% coverage required
-4. Write tests for every code path including error branches
-5. Run `npm test` and verify 90% coverage across all metrics
-6. If any metric is below 90%, identify uncovered lines and add tests
+3. Read the source code to understand ALL branches — cover every path to meet the tiered targets
+4. Write tests for every code path including error branches (error-handling/security paths need 100%)
+5. Run `npm test` and verify coverage meets the tiered targets across all metrics
+6. If any metric is below target, identify uncovered lines and add tests
 7. Check problems tab for SonarQube issues
