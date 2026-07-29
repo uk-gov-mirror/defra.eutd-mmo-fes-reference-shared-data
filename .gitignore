@@ -7,3 +7,4 @@ service_bus/
 .DS_Store
 test-results/
 .idea/
+.vscode/mcp.json
