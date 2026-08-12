@@ -826,10 +826,15 @@ describe('CATCH API Integration (FI0-10355)', () => {
   describe('sendDocumentToBoomi', () => {
     let mockAxiosPost: jest.SpyInstance;
     let mockGetEntraOAuthToken: jest.SpyInstance;
+    let mockConfig: jest.SpyInstance;
 
     beforeEach(() => {
       mockAxiosPost = jest.spyOn(axios, 'post');
       mockGetEntraOAuthToken = jest.spyOn(BoomiService, 'getEntraOAuthToken');
+      mockConfig = jest.spyOn(config, 'getConfig').mockReturnValue({
+        boomiUrl: 'boomi-url',
+        boomiCatchApiTimeoutMs: 90000,
+      } as any);
     });
 
     it('should successfully submit catch certificate', async () => {
@@ -863,6 +868,24 @@ describe('CATCH API Integration (FI0-10355)', () => {
       expect(result).toEqual(mockApiResponse);
       expect(mockGetEntraOAuthToken).toHaveBeenCalledWith('catchSubmit');
       expect(mockLoggerInfo).toHaveBeenCalledWith('[BOOMI-SERVICE][catchSubmit][SUBMITTING-CATCHCERTIFICATE]');
+    });
+
+    it('should submit using the configured submit timeout', async () => {
+      const mockPayload = {
+        CreateCatchCertificateRequest: { SPSCertificate: { certificateId: 'CERT-123' } }
+      };
+
+      mockConfig.mockReturnValue({ boomiUrl: 'boomi-url', boomiCatchApiTimeoutMs: 45000 } as any);
+      mockGetEntraOAuthToken.mockResolvedValue({ token_type: 'Bearer', access_token: 'test-access-token' });
+      mockAxiosPost.mockResolvedValue({ data: { status: 'OK' }, status: 200 });
+
+      await BoomiService.sendDocumentToBoomi(mockPayload, { documentType: 'CATCHCERTIFICATE' }, 'catchSubmit');
+
+      expect(mockAxiosPost).toHaveBeenCalledWith(
+        expect.any(String),
+        mockPayload,
+        expect.objectContaining({ timeout: 45000 })
+      );
     });
 
     it('should handle API error with response', async () => {
