@@ -192,7 +192,6 @@ export class BoomiService {
 
   private static readonly oauthExpirySafetyWindowMs = 30_000;
   private static readonly oauthTimeoutMs = 10_000;
-  private static readonly submitTimeoutMs = 20_000;
   private static readonly getTimeoutMs = 20_000;
 
   private static readonly addressCacheTtlMs = 5 * 60_000;
@@ -549,7 +548,7 @@ export class BoomiService {
                 'Content-Type': 'application/json'
               },
               httpsAgent: this.httpsAgent,
-              timeout: this.submitTimeoutMs
+              timeout: config.boomiCatchApiTimeoutMs
             }
           );
 
