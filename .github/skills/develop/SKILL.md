@@ -15,8 +15,11 @@ Expert software engineer for the MMO Shared Reference Data library. Reads the co
 
 This skill supports the **§4 working framework** in [copilot-instructions.md](../../copilot-instructions.md) — it does not replace it. Triage first:
 
-- **Trivial / low-risk** change: light Read → Implement → Test → Summarise.
-- **Non-trivial** work (new feature, transformation/type/public-API/integration change, anything affecting shared-type or data correctness): it must go through planning and user approval before implementation — normally coordinated by the [Orchestrator](../../agents/reference-shared-data-orchestrator.agent.md) and [Planner](../../agents/reference-shared-data-planner.agent.md) agents. Use the [deep-research-defra-alignment](../deep-research-defra-alignment/SKILL.md) skill for the Research (§4.2) stage when something is genuinely uncertain.
+- **Trivial** change: light Read → Implement → Test → Summarise.
+- **Standard** work (a normal transformation/type change or fix, with no new architecture, public-API/barrel-export change, external integration, or security surface): a lightweight inline plan (authored by the Developer, no heavyweight Planner) plus user approval before implementation.
+- **Complex** work (new architecture, a public-API/barrel-export change, a new external integration, a security surface): full planning and user approval before implementation — normally coordinated by the [Orchestrator](../../agents/reference-shared-data-orchestrator.agent.md) and [Planner](../../agents/reference-shared-data-planner.agent.md) agents.
+
+Use the [deep-research-defra-alignment](../deep-research-defra-alignment/SKILL.md) skill for the single, risk-scoped Research (§4.2) pass when something is genuinely uncertain.
 
 ## When to Use
 
